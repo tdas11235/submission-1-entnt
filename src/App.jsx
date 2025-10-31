@@ -31,6 +31,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import JobsBoard from "./features/jobs/JobsBoard.jsx";
+import JobDetail from "./features/jobs/JobDetail.jsx";
 
 import CandidateList from "./features/candidates/CandidateList.jsx";
 import CandidateProfilePage from "./features/candidates/CandidateProfilePage.jsx";
@@ -48,7 +49,7 @@ export default function App() {
 
             {/* Jobs */}
             <Route path="/jobs" element={<JobsBoard />} />
-            {/* <Route path="/jobs/:jobId" element={<JobDetailPage />} /> */}
+            <Route path="/jobs/:jobId" element={<JobDetail />} />
 
             {/* Candidates */}
             <Route path="/candidates" element={<CandidateList />} />

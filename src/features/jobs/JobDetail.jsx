@@ -1,6 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getJobById } from "../../api/client";
+import {
+  Box,
+  Typography,
+  Chip,
+  CircularProgress,
+  Card,
+  CardContent,
+  Divider,
+} from "@mui/material";
 
 export default function JobDetail() {
   const { jobId } = useParams();
@@ -10,19 +19,71 @@ export default function JobDetail() {
     queryFn: () => getJobById(jobId),
   });
 
-  if (isLoading) return <p>Loading job...</p>;
-  if (error) return <p>Error loading job.</p>;
-  if (!job) return <p>Job not found.</p>;
+  if (isLoading)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+
+  if (error)
+    return (
+      <Typography color="error" align="center" sx={{ mt: 8 }}>
+        Error loading job.
+      </Typography>
+    );
+
+  if (!job)
+    return (
+      <Typography align="center" sx={{ mt: 8 }}>
+        Job not found.
+      </Typography>
+    );
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto" }}>
-      <h2>{job.title}</h2>
-      <p>Status: {job.status}</p>
-      {job.tags?.length > 0 && (
-        <p>Tags: {job.tags.join(", ")}</p>
-      )}
-      <p>Created: {new Date(job.createdAt).toLocaleString()}</p>
-      <p>Updated: {new Date(job.updatedAt).toLocaleString()}</p>
-    </div>
+    <Box
+      sx={{
+        width: "100vw",
+        mx: "auto",
+        mt: 5,
+        p: 2,
+      }}
+    >
+      <Card elevation={3} sx={{ borderRadius: 3 }}>
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            {job.title}
+          </Typography>
+
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            <strong>Status:</strong>{" "}
+            <Chip
+              label={job.status}
+              color={job.status === "active" ? "success" : "default"}
+              size="small"
+            />
+          </Typography>
+
+          {job.tags?.length > 0 && (
+            <Box sx={{ mt: 2, mb: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
+              {job.tags.map((tag) => (
+                <Chip key={tag} label={tag} variant="outlined" color="primary" />
+              ))}
+            </Box>
+          )}
+
+          <Divider sx={{ my: 2 }} />
+
+          <Typography variant="body2" color="text.secondary">
+            <strong>Created:</strong>{" "}
+            {new Date(job.createdAt).toLocaleString()}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Updated:</strong>{" "}
+            {new Date(job.updatedAt).toLocaleString()}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }

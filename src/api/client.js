@@ -13,7 +13,7 @@ export const getJobs = (params = {}) =>
     apiFetch(`/jobs?${new URLSearchParams(params)}`);
 
 export const getJobById = (id) => {
-    return apiFetch(`'jobs/${id}`)
+    return apiFetch(`/jobs/${id}`)
 }
 
 export const createJob = (data) =>
